@@ -14,16 +14,14 @@ bool isBigEndian() {
 }
 
 void le_show_bytes(pointer start, size_t len) {
-    // 그대로 출력
-    for (size_t i = len; i > 0; i--)
-        printf("%.2X", start[i - 1]);
+    for (size_t i = 0; i < len; i++)
+        printf("%.2X", start[i]);
     printf("\n");
 }
 
 void be_show_bytes(pointer start, size_t len) {
-    // 반대로 출력
-    for (size_t i = 0; i < len; i++)
-        printf("%.2X", start[i]);
+    for (size_t i = len; i > 0; i--)
+        printf("%.2X", start[i - 1]);
     printf("\n");
 }
 
@@ -32,19 +30,18 @@ int main(int argc, char* argv[]) {
         printf("Usage: %s number\n", argv[0]);
         exit(0);
     }
-    unsigned int a = atoi(argv[1]);
+    double a = atof(argv[1]);
 
     printf("ARCH=%d\n", is64bit()? 64 : 32);
     printf("ORDERING=%s\n", isBigEndian()? "BIG_ENDIAN": "LITTLE_ENDIAN");
 
-    printf("MYANS: DEC=%d HEX=", a);
+    printf("MYANS: DEC=%f HEX=", a);
     if (isBigEndian()) {
-        be_show_bytes((pointer)&a, sizeof(unsigned int));
+        be_show_bytes((pointer)&a, sizeof(double));
     } else {
-        le_show_bytes((pointer)&a, sizeof(unsigned int));
+        le_show_bytes((pointer)&a, sizeof(double));
     }
 
-    printf("CHECK: DEC=%d HEX=%.8X\n", a, a);
     return 0;
 }
 
